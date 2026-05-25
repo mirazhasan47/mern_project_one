@@ -6,14 +6,37 @@ if (process.env.NODE_ENV !== "production") {
 // 2. Import dependencies
 const express = require("express");
 const connectToDb = require("./config/connectToDb");
+const Note = require("./models/note");
 
 // 3. Create app and connect to DB
 const app = express();
+
+app.use(express.json()); // Middleware to parse JSON bodies 
+
 connectToDb();
 
 // 4. Routing
 app.get("/", (req, res) => {
   res.json({ hello: "world" });
+});
+
+app.get("/notes", async (req, res) => {
+  // Find the notes
+  const notes = await Note.find();
+
+  // Respond with them
+  res.json({ notes: notes });
+});
+
+app.post("/notes", async (req, res) => {
+  const { title, body } = req.body;
+
+  const note = await Note.create({
+    title,
+    body,
+  });
+
+  res.json({ note });
 });
 
 // 5. Start server (Fallback to port 5000 if process.env.PORT is undefined)

@@ -1,0 +1,2 @@
+{"sessionId":"9ee999","location":"connectToDb.js:connectToDb","message":"env vars before connect","data":{"hasDbUrl":true,"hasUrl":false,"nodeEnv":"undefined","port":"3000"},"timestamp":1779286355582,"hypothesisId":"A-C","runId":"pre-fix"}
+{"sessionId":"9ee999","location":"connectToDb.js:connectToDb","message":"env vars before connect","data":{"hasDbUrl":true,"hasUrl":false,"nodeEnv":"undefined","port":"3000"},"timestamp":1779286356106,"hypothesisId":"A-C","runId":"pre-fix"}
