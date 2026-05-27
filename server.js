@@ -28,6 +28,21 @@ app.get("/notes", async (req, res) => {
   res.json({ notes: notes });
 });
 
+app.get("/notes/:id", async (req, res) => {
+  // Get id from URL
+  const noteId = req.params.id;
+
+  try {
+    // Find note by id
+    const note = await Note.findById(noteId);
+
+    // Send response
+    res.json({ note: note });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch note" });
+  }
+});
+
 app.post("/notes", async (req, res) => {
   const { title, body } = req.body;
 
