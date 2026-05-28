@@ -5,14 +5,15 @@ if (process.env.NODE_ENV !== "production") {
 
 // 2. Import dependencies
 const express = require("express");
+const cors = require("cors");
 const connectToDb = require("./config/connectToDb");
-const Note = require("./models/note");
+const notesController = require("../mern ecommerce app/controllers/notesController");
 
 // 3. Create app and connect to DB
 const app = express();
 
 app.use(express.json()); // Middleware to parse JSON bodies 
-
+app.use(cors());
 connectToDb();
 
 // 4. Routing
@@ -20,38 +21,19 @@ app.get("/", (req, res) => {
   res.json({ hello: "world" });
 });
 
-app.get("/notes", async (req, res) => {
-  // Find the notes
-  const notes = await Note.find();
+// Routing
+app.get("/notes", notesController.fetchNotes);
+app.get("/notes/:id", notesController.fetchNote);
 
-  // Respond with them
-  res.json({ notes: notes });
-});
+app.post("/notes", notesController.createNote);
 
-app.get("/notes/:id", async (req, res) => {
-  // Get id from URL
-  const noteId = req.params.id;
+app.put("/notes/:id", notesController.updateNote);
 
-  try {
-    // Find note by id
-    const note = await Note.findById(noteId);
+app.delete("/notes/:id", notesController.deleteNote);
 
-    // Send response
-    res.json({ note: note });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch note" });
-  }
-});
-
-app.post("/notes", async (req, res) => {
-  const { title, body } = req.body;
-
-  const note = await Note.create({
-    title,
-    body,
-  });
-
-  res.json({ note });
+// Start our server
+app.listen(3000, () => {
+  console.log("Server started on port 3000");
 });
 
 // 5. Start server (Fallback to port 5000 if process.env.PORT is undefined)
